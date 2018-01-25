@@ -1,7 +1,7 @@
 # Личный проект «Кекстаграм» [![Build status][travis-image]][travis-url]
 
 * Студент: [Анастасия Кузнецова](https://up.htmlacademy.ru/javascript/12/user/599209).
-* Наставник: `Неизвестно`.
+* Наставник: [Андрей Алексеевич](https://up.htmlacademy.ru/javascript/12/user/133011).
 
 ---
 
