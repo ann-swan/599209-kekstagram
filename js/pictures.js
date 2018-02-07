@@ -5,14 +5,17 @@ var PHOTOS_COUNT = 25;
 var pictureTemplate = document.querySelector('#picture-template').content.querySelector('.picture');
 var pictiresElement = document.querySelector('.pictures');
 var galleryOverlayElement = document.querySelector('.gallery-overlay');
+var photos = [];
 
 var createPhotosList = function (photosCount) {
   var photosList = [];
   for (var i = 1; i <= photosCount; i++) {
+    var commentsList = [];
+    commentsList.push(getRandomArrayElement(COMMENTS));
     photosList.push({
       url: 'photos/' + i + '.jpg',
       likes: getRandomBetween(15, 201),
-      comments: COMMENTS.slice().splice(getRandomBetween(0, COMMENTS.length - 1), 1)
+      comments: commentsList
     });
   }
   return photosList;
@@ -21,6 +24,10 @@ var createPhotosList = function (photosCount) {
 var getRandomBetween = function (min, max) {
   return Math.floor(Math.random() * (max - min)) + min;
 };
+
+var getRandomArrayElement = function (list) {
+  return list[getRandomBetween(0, list.length)];
+}
 
 var createPhotoElement = function (photo) {
   var pictureElement = pictureTemplate.cloneNode(true);
@@ -43,10 +50,8 @@ var fillGalleryElement = function (photo) {
   galleryOverlayElement.querySelector('.gallery-overlay-image').attributes.src.value = photo.url;
   galleryOverlayElement.querySelector('.likes-count').textContent = photo.likes;
   galleryOverlayElement.querySelector('.comments-count').textContent = photo.comments.length;
-  return galleryOverlayElement;
 };
 
-var photos = [];
 photos = createPhotosList(PHOTOS_COUNT);
 fillPhotosListElement(photos, pictiresElement);
 
