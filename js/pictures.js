@@ -27,7 +27,7 @@ var getRandomBetween = function (min, max) {
 
 var getRandomArrayElement = function (list) {
   return list[getRandomBetween(0, list.length)];
-}
+};
 
 var createPhotoElement = function (photo) {
   var pictureElement = pictureTemplate.cloneNode(true);
