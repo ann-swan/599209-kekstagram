@@ -36,7 +36,7 @@
           <button type="button"
                   class="upload-resize-control upload-resize-controls-button upload-resize-controls-button-dec">–
           </button><!--
-          --><input type="text" class="upload-resize-control upload-resize-controls-value" value="55%" readonly title="Image Scale" name="scale"><!--
+          --><input type="text" class="upload-resize-control upload-resize-controls-value" value="100%" readonly title="Image Scale" name="scale"><!--
           --><button type="button"
                   class="upload-resize-control upload-resize-controls-button upload-resize-controls-button-inc">+
           </button>
@@ -44,11 +44,11 @@
 
         <div class="upload-form-preview">
           <div></div>
-          <img src="img/upload-default-image.jpg" class="effect-image-preview">
+          <img src="img/upload-default-image.jpg" class="effect-image-preview" data-effect="none">
         </div>
 
         <fieldset class="upload-effect-controls">
-          <div class="upload-effect-level">
+          <div class="upload-effect-level hidden">
             <input type="number" class="upload-effect-level-value" name="effect-level" value="20">
             <div class="upload-effect-level-line">
               <div class="upload-effect-level-pin" style="left: 20%"></div>
@@ -130,7 +130,7 @@
 
 
 <div class="gallery-overlay hidden">
-  <span class="gallery-overlay-close">&times;</span>
+  <span class="gallery-overlay-close" tabindex="0">&times;</span>
   <div class="gallery-overlay-preview">
     <img src="" class="gallery-overlay-image" alt="">
     <div class="gallery-overlay-controls">
