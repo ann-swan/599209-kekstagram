@@ -55,12 +55,10 @@ var photos = [];
 var createPhotosList = function (photosCount) {
   var photosList = [];
   for (var i = 1; i <= photosCount; i++) {
-    var commentsList = [];
-    commentsList.push(getRandomArrayElement(COMMENTS));
     photosList.push({
       url: 'photos/' + i + '.jpg',
       likes: getRandomBetween(15, 201),
-      comments: commentsList
+      comments: [getRandomArrayElement(COMMENTS)]
     });
   }
   return photosList;
@@ -83,10 +81,10 @@ var createPhotoElement = function (index, photo) {
   return pictureElement;
 };
 
-var fillPhotosListElement = function (list, listElement) {
+var fillPhotosList = function (list, listElement) {
   var fragment = document.createDocumentFragment();
   list.forEach(function (item, i) {
-    fragment.appendChild(createPhotoElement(i, list[i]));
+    fragment.appendChild(createPhotoElement(i, item));
   });
   listElement.innerHTML = '';
   listElement.appendChild(fragment);
@@ -99,7 +97,7 @@ var fillGalleryElement = function (photo) {
 };
 
 photos = createPhotosList(PHOTOS_COUNT);
-fillPhotosListElement(photos, picturesElement);
+fillPhotosList(photos, picturesElement);
 
 var onGalleryOverlayEscPress = function (evt) {
   if (evt.keyCode === ESC_KEYCODE) {
@@ -122,8 +120,8 @@ var onPicturesClick = function (evt) {
   evt.preventDefault();
   while (target !== picturesElement) {
     if (target.className === 'picture') {
-      openGalleryOverlay();
       fillGalleryElement(photos[target.attributes.id]);
+      openGalleryOverlay();
       return;
     }
     target = target.parentNode;
@@ -150,7 +148,7 @@ var getCurrentEffect = function () {
   return effectImageElement.dataset.effect;
 };
 
-var setVisibilityForSlider = function () {
+var setSliderVisibility = function () {
   if (getCurrentEffect() === DEFAULT_EFFECT) {
     uploadEffectLevelElement.classList.add('hidden');
     return;
@@ -162,7 +160,7 @@ var setCurrentEffect = function (effectName) {
   effectImageElement.classList.remove(PREFIX_FOR_CLASS_EFFECT + getCurrentEffect());
   effectImageElement.classList.add(PREFIX_FOR_CLASS_EFFECT + effectName);
   effectImageElement.dataset.effect = effectName;
-  setVisibilityForSlider();
+  setSliderVisibility();
 };
 
 var setEffectLevelValue = function (levelValue) {
