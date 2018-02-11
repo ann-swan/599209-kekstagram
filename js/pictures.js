@@ -250,7 +250,7 @@ var validateHashtags = function () {
       return false;
     }
     hashtags = hashtags.map(function (item) {
-      return item.toLowerCase(); 
+      return item.toLowerCase();
     });
     for (var i = 0; i < hashtags.length; i++) {
       if (hashtags[i][0] !== '#') {
@@ -272,7 +272,7 @@ var validateHashtags = function () {
       if (hashtags.includes(hashtags[i], i + 1)) {
         setCustomValidity('Хэш-теги не могут повторяться');
         return false;
-      } 
+      }
     }
   }
   clearHashtagsError();
@@ -310,7 +310,7 @@ var onUploadOverlayEscPress = function (evt) {
   }
 };
 
-var openUploadOverlay = function (evt) {
+var openUploadOverlay = function () {
   showPreviewImg(uploadFileElement.files[0]);
   uploadOverlayElement.classList.remove('hidden');
   document.addEventListener('keydown', onUploadOverlayEscPress);
