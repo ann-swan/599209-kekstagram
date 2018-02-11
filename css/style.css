@@ -399,6 +399,10 @@ input[type=radio]:checked + .upload-effect-label .upload-effect-preview {
 }
 
 /* Хэш-теги */
+.upload-form-hashtags-container {
+  position: relative;
+}
+
 .upload-form-hashtags {
   display: block;
   width: 470px;
@@ -413,6 +417,13 @@ input[type=radio]:checked + .upload-effect-label .upload-effect-preview {
 
 .upload-form-hashtags:focus {
   color: #000000;
+}
+
+.upload-form-hashtags-error {
+  position: absolute;
+  left: 105px;
+  top: 45px;
+  color: red;
 }
 
 /* Описание */
