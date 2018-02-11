@@ -11,6 +11,7 @@ var SCALE_RANGE = 25;
 var MIN_SCALE = 25;
 var MAX_SCALE = 100;
 var DEFAULT_SCALE = 100;
+var MAX_HASHTAG_LENGTH = 20;
 var pictureTemplate = document.querySelector('#picture-template').content.querySelector('.picture');
 var picturesElement = document.querySelector('.pictures');
 var galleryOverlayElement = document.querySelector('.gallery-overlay');
@@ -19,6 +20,7 @@ var uploadFormElement = document.querySelector('.upload-form');
 var uploadFileElement = uploadFormElement.querySelector('#upload-file');
 var uploadOverlayElement = uploadFormElement.querySelector('.upload-overlay');
 var uploadOverlayCancelElement = uploadFormElement.querySelector('.upload-form-cancel');
+var uploadSubmitElement = uploadFormElement.querySelector('.upload-form-submit');
 var uploadEffectLevelElement = uploadFormElement.querySelector('.upload-effect-level');
 var uploadEffectLevelPinElement = uploadEffectLevelElement.querySelector('.upload-effect-level-pin');
 var uploadEffectLevelLineElement = uploadEffectLevelElement.querySelector('.upload-effect-level-line');
@@ -30,6 +32,8 @@ var formDescroptionElement = uploadFormElement.querySelector('.upload-form-descr
 var scaleValueElement = uploadFormElement.querySelector('.upload-resize-controls-value');
 var scaleBtnDecElement = uploadFormElement.querySelector('.upload-resize-controls-button-dec');
 var scaleBtnIncElement = uploadFormElement.querySelector('.upload-resize-controls-button-inc');
+var hashtagsElement = uploadFormElement.querySelector('.upload-form-hashtags');
+var hashtagsErrorElement = uploadFormElement.querySelector('.upload-form-hashtags-error');
 var effects = {
   chrome: function () {
     return 'grayscale(' + getEffectLevelValue() / 100 + ')';
@@ -202,7 +206,7 @@ uploadEffectLevelPinElement.addEventListener('mouseup', onEffectLevelPinMouseUp)
 uploadEffectElement.addEventListener('click', onEffectClick);
 
 var getScaleValue = function () {
-  return scaleValueElement.value.slice(0, -1);
+  return Number(scaleValueElement.value.slice(0, -1));
 };
 
 var setScaleValue = function (scaleValue) {
@@ -213,19 +217,92 @@ var setScaleValue = function (scaleValue) {
 var onScaleBtnDecClick = function () {
   var scale = getScaleValue();
   if (scale > MIN_SCALE) {
-    setScaleValue(+scale - SCALE_RANGE);
+    setScaleValue(scale - SCALE_RANGE);
   }
 };
 
 var onScaleBtnIncClick = function () {
   var scale = getScaleValue();
   if (scale < MAX_SCALE) {
-    setScaleValue(+scale + SCALE_RANGE);
+    setScaleValue(scale + SCALE_RANGE);
   }
 };
 
 scaleBtnDecElement.addEventListener('click', onScaleBtnDecClick);
 scaleBtnIncElement.addEventListener('click', onScaleBtnIncClick);
+
+var setCustomValidity = function (errorText) {
+  hashtagsElement.style.border = '1px red solid';
+  hashtagsErrorElement.textContent = errorText;
+};
+
+var clearHashtagsError = function () {
+  hashtagsElement.style.border = '';
+  hashtagsErrorElement.textContent = '';
+};
+
+var validateHashtags = function () {
+  var hashtags = hashtagsElement.value.trim();
+  if (hashtags !== '') {
+    hashtags = hashtags.split(/\s+/);
+    if (hashtags.length > 5) {
+      setCustomValidity('Хэш-тегов не может быть более пяти');
+      return false;
+    }
+    hashtags = hashtags.map(function (item) {
+      return item.toLowerCase();
+    });
+    for (var i = 0; i < hashtags.length; i++) {
+      if (hashtags[i][0] !== '#') {
+        setCustomValidity('Хэш-тег должен начинается с символа # (решётка)');
+        return false;
+      }
+      if (hashtags[i].length < 2) {
+        setCustomValidity('Хэш-тег не может содержать только символ # (решётка)');
+        return false;
+      }
+      if (hashtags[i].length > MAX_HASHTAG_LENGTH) {
+        setCustomValidity('Длина хэш-тега не может превышать 20 символов');
+        return false;
+      }
+      if (hashtags[i].substring(1).search('#') !== -1) {
+        setCustomValidity('Хэш-тег не должен содержать несколько символов # (решётка)');
+        return false;
+      }
+      if (hashtags.includes(hashtags[i], i + 1)) {
+        setCustomValidity('Хэш-теги не могут повторяться');
+        return false;
+      }
+    }
+  }
+  clearHashtagsError();
+  return true;
+};
+
+var onHashtagsKeyup = function () {
+  validateHashtags();
+};
+
+hashtagsElement.addEventListener('keyup', onHashtagsKeyup);
+
+var onUploadSubmitClick = function (evt) {
+  evt.preventDefault();
+  if (validateHashtags()) {
+    uploadFormElement.submit();
+  }
+};
+
+uploadSubmitElement.addEventListener('click', onUploadSubmitClick);
+
+var showPreviewImg = function (file) {
+  if (file.type.match(/image.*/)) {
+    var reader = new FileReader();
+    reader.addEventListener('load', function (evt) {
+      effectImageElement.src = evt.target.result;
+    });
+    reader.readAsDataURL(file);
+  }
+};
 
 var onUploadOverlayEscPress = function (evt) {
   if (evt.keyCode === ESC_KEYCODE && evt.target !== formDescroptionElement) {
@@ -234,6 +311,7 @@ var onUploadOverlayEscPress = function (evt) {
 };
 
 var openUploadOverlay = function () {
+  showPreviewImg(uploadFileElement.files[0]);
   uploadOverlayElement.classList.remove('hidden');
   document.addEventListener('keydown', onUploadOverlayEscPress);
 };
@@ -241,6 +319,9 @@ var openUploadOverlay = function () {
 var closeUploadOverlay = function () {
   uploadOverlayElement.classList.add('hidden');
   uploadFileElement.value = '';
+  hashtagsElement.value = '';
+  formDescroptionElement.value = '';
+  clearHashtagsError();
   setCurrentEffect(DEFAULT_EFFECT);
   setEffectLevel(DEFAULT_SLIDER_RANGE);
   setScaleValue(DEFAULT_SCALE);
