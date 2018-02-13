@@ -8,19 +8,19 @@
   var hashtagsErrorElement = uploadFormElement.querySelector('.upload-form-hashtags-error');
   var validators = [
     function (hashtagsObject) {
-      return hashtagsObject.hashtag[0] === '#' ? false : 'Хэш-тег должен начинается с символа # (решётка)'; 
+      return hashtagsObject.hashtag[0] === '#' ? false : 'Хэш-тег должен начинается с символа # (решётка)';
     },
     function (hashtagsObject) {
-      return hashtagsObject.hashtag.length > 1 ? false : 'Хэш-тег не может содержать только символ # (решётка)'; 
+      return hashtagsObject.hashtag.length > 1 ? false : 'Хэш-тег не может содержать только символ # (решётка)';
     },
     function (hashtagsObject) {
-      return hashtagsObject.hashtag.length <= MAX_HASHTAG_LENGTH ? false : 'Длина хэш-тега не может превышать 20 символов'; 
+      return hashtagsObject.hashtag.length <= MAX_HASHTAG_LENGTH ? false : 'Длина хэш-тега не может превышать 20 символов';
     },
     function (hashtagsObject) {
-      return hashtagsObject.hashtag.substring(1).search('#') === -1 ? false : 'Хэш-тег не должен содержать несколько символов # (решётка)'; 
+      return hashtagsObject.hashtag.substring(1).search('#') === -1 ? false : 'Хэш-тег не должен содержать несколько символов # (решётка)';
     },
     function (hashtagsObject) {
-      return hashtagsObject.hashtags.includes(hashtagsObject.hashtag, hashtagsObject.i + 1) === false ? false : 'Хэш-теги не могут повторяться'; 
+      return hashtagsObject.hashtags.includes(hashtagsObject.hashtag, hashtagsObject.i + 1) === false ? false : 'Хэш-теги не могут повторяться';
     },
   ];
 
@@ -52,7 +52,7 @@
             setCustomValidity(error);
             return false;
           }
-        } 
+        }
       }
     }
     clearHashtagsError();

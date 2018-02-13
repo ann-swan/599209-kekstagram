@@ -19,7 +19,7 @@
     scaleValueElement.value = scaleValue + '%';
     effectImageElement.style.transform = 'scale(' + scaleValue / 100 + ')';
   };
-  
+
   var setDefaultScale = function () {
     setScaleValue(DEFAULT_SCALE);
   };
@@ -40,9 +40,8 @@
 
   scaleBtnDecElement.addEventListener('click', onScaleBtnDecClick);
   scaleBtnIncElement.addEventListener('click', onScaleBtnIncClick);
-  
+
   window.scale = {
     setDefault: setDefaultScale
   };
 })();
-  

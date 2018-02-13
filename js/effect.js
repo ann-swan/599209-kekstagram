@@ -78,11 +78,11 @@
     setSliderPinPosition(level);
     setFilter();
   };
-  
+
   var setDefaultEffect = function () {
     setCurrentEffect(DEFAULT_EFFECT);
   };
-  
+
   var setDefaultEffectLevel = function () {
     setEffectLevel(DEFAULT_SLIDER_RANGE);
   };
@@ -98,7 +98,7 @@
       setDefaultEffectLevel();
     }
   };
-  
+
   uploadEffectLevelPinElement.addEventListener('mouseup', onEffectLevelPinMouseUp);
   uploadEffectElement.addEventListener('click', onEffectClick);
 
@@ -106,5 +106,5 @@
     setDefault: setDefaultEffect,
     setDefaultLevel: setDefaultEffectLevel
   };
-  
+
 })();
