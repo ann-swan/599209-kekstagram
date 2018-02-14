@@ -16,7 +16,7 @@
     var obj = {};
     for (var i = 0; i < data.length; i++) {
       obj[data[i].elementName] = element.querySelector(data[i].selector);
-    };
+    }
     return obj;
   };
 
