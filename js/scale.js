@@ -6,18 +6,22 @@
   var MAX_SCALE = 100;
   var DEFAULT_SCALE = 100;
   var uploadFormElement = document.querySelector('.upload-form');
-  var effectImageElement = uploadFormElement.querySelector('.effect-image-preview');
-  var scaleValueElement = uploadFormElement.querySelector('.upload-resize-controls-value');
-  var scaleBtnDecElement = uploadFormElement.querySelector('.upload-resize-controls-button-dec');
-  var scaleBtnIncElement = uploadFormElement.querySelector('.upload-resize-controls-button-inc');
+  var elementsData = [
+    {elementName: 'image', selector: '.effect-image-preview'},
+    {elementName: 'scaleValue', selector: '.upload-resize-controls-value'},
+    {elementName: 'scaleBtnDec', selector: '.upload-resize-controls-button-dec'},
+    {elementName: 'scaleBtnInc', selector: '.upload-resize-controls-button-inc'}
+  ];
+
+  var uploadElements = window.util.generateElements(elementsData, uploadFormElement);
 
   var getScaleValue = function () {
-    return Number(scaleValueElement.value.slice(0, -1));
+    return Number(uploadElements.scaleValue.value.slice(0, -1));
   };
 
   var setScaleValue = function (scaleValue) {
-    scaleValueElement.value = scaleValue + '%';
-    effectImageElement.style.transform = 'scale(' + scaleValue / 100 + ')';
+    uploadElements.scaleValue.value = scaleValue + '%';
+    uploadElements.image.style.transform = 'scale(' + scaleValue / 100 + ')';
   };
 
   var setDefaultScale = function () {
@@ -38,8 +42,8 @@
     }
   };
 
-  scaleBtnDecElement.addEventListener('click', onScaleBtnDecClick);
-  scaleBtnIncElement.addEventListener('click', onScaleBtnIncClick);
+  uploadElements.scaleBtnDec.addEventListener('click', onScaleBtnDecClick);
+  uploadElements.scaleBtnInc.addEventListener('click', onScaleBtnIncClick);
 
   window.scale = {
     setDefault: setDefaultScale

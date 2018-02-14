@@ -2,16 +2,18 @@
 
 (function () {
   var DEFAULT_EFFECT = 'none';
-  var PREFIX_FOR_CLASS_EFFECT = 'effect-';
+  var CLASS_EFFECT_PREFIX = 'effect-';
   var DEFAULT_SLIDER_RANGE = 100;
   var uploadFormElement = document.querySelector('.upload-form');
-  var uploadEffectElement = uploadFormElement.querySelector('.upload-effect-controls');
-  var uploadEffectLevelElement = uploadFormElement.querySelector('.upload-effect-level');
-  var effectImageElement = uploadFormElement.querySelector('.effect-image-preview');
-  var uploadEffectLevelPinElement = uploadEffectLevelElement.querySelector('.upload-effect-level-pin');
-  var uploadEffectLevelLineElement = uploadEffectLevelElement.querySelector('.upload-effect-level-line');
-  var uploadEffectLevelValue = uploadEffectLevelElement.querySelector('.upload-effect-level-value');
-  var uploadEffectLevelValElement = uploadEffectLevelElement.querySelector('.upload-effect-level-val');
+  var elementsData = [
+    {elementName: 'effect', selector: '.upload-effect-controls'},
+    {elementName: 'effectLevel', selector: '.upload-effect-level'},
+    {elementName: 'effectImage', selector: '.effect-image-preview'},
+    {elementName: 'effectLevelPin', selector: '.upload-effect-level-pin'},
+    {elementName: 'effectLevelLine', selector: '.upload-effect-level-line'},
+    {elementName: 'effectLevelValue', selector: '.upload-effect-level-value'},
+    {elementName: 'effectLevelVal', selector: '.upload-effect-level-val'}
+  ];
   var effects = {
     chrome: function () {
       return 'grayscale(' + getEffectLevelValue() / 100 + ')';
@@ -33,44 +35,46 @@
     },
   };
 
+  var uploadElements = window.util.generateElements(elementsData, uploadFormElement);
+
   var calculateEffectLevel = function () {
-    return Math.round(uploadEffectLevelPinElement.offsetLeft / uploadEffectLevelLineElement.offsetWidth * 100);
+    return Math.round(uploadElements.effectLevelPin.offsetLeft / uploadElements.effectLevelLine.offsetWidth * 100);
   };
 
   var getCurrentEffect = function () {
-    return effectImageElement.dataset.effect;
+    return uploadElements.effectImage.dataset.effect;
   };
 
   var setSliderVisibility = function () {
     if (getCurrentEffect() === DEFAULT_EFFECT) {
-      uploadEffectLevelElement.classList.add('hidden');
+      uploadElements.effectLevel.classList.add('hidden');
       return;
     }
-    uploadEffectLevelElement.classList.remove('hidden');
+    uploadElements.effectLevel.classList.remove('hidden');
   };
 
   var setCurrentEffect = function (effectName) {
-    effectImageElement.classList.remove(PREFIX_FOR_CLASS_EFFECT + getCurrentEffect());
-    effectImageElement.classList.add(PREFIX_FOR_CLASS_EFFECT + effectName);
-    effectImageElement.dataset.effect = effectName;
+    uploadElements.effectImage.classList.remove(CLASS_EFFECT_PREFIX + getCurrentEffect());
+    uploadElements.effectImage.classList.add(CLASS_EFFECT_PREFIX + effectName);
+    uploadElements.effectImage.dataset.effect = effectName;
     setSliderVisibility();
   };
 
   var setEffectLevelValue = function (levelValue) {
-    uploadEffectLevelValue.value = levelValue;
+    uploadElements.effectLevelValue.value = levelValue;
   };
 
   var getEffectLevelValue = function () {
-    return uploadEffectLevelValue.value;
+    return uploadElements.effectLevelValue.value;
   };
 
   var setFilter = function () {
-    effectImageElement.style.filter = effects[getCurrentEffect()]();
+    uploadElements.effectImage.style.filter = effects[getCurrentEffect()]();
   };
 
   var setSliderPinPosition = function (levelProc) {
-    uploadEffectLevelValElement.style.width = levelProc + '%';
-    uploadEffectLevelPinElement.style.left = levelProc + '%';
+    uploadElements.effectLevelVal.style.width = levelProc + '%';
+    uploadElements.effectLevelPin.style.left = levelProc + '%';
   };
 
   var setEffectLevel = function (level) {
@@ -99,8 +103,8 @@
     }
   };
 
-  uploadEffectLevelPinElement.addEventListener('mouseup', onEffectLevelPinMouseUp);
-  uploadEffectElement.addEventListener('click', onEffectClick);
+  uploadElements.effectLevelPin.addEventListener('mouseup', onEffectLevelPinMouseUp);
+  uploadElements.effect.addEventListener('click', onEffectClick);
 
   window.effect = {
     setDefault: setDefaultEffect,

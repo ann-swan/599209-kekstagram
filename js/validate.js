@@ -3,39 +3,43 @@
 (function () {
   var MAX_HASHTAG_LENGTH = 20;
   var uploadFormElement = document.querySelector('.upload-form');
-  var uploadSubmitElement = uploadFormElement.querySelector('.upload-form-submit');
-  var hashtagsElement = uploadFormElement.querySelector('.upload-form-hashtags');
-  var hashtagsErrorElement = uploadFormElement.querySelector('.upload-form-hashtags-error');
+  var elementsData = [
+    {elementName: 'formSubmit', selector: '.upload-form-submit'},
+    {elementName: 'hashtags', selector: '.upload-form-hashtags'},
+    {elementName: 'hashtagsError', selector: '.upload-form-hashtags-error'}
+  ];
   var validators = [
-    function (hashtagsObject) {
-      return hashtagsObject.hashtag[0] === '#' ? false : 'Хэш-тег должен начинается с символа # (решётка)';
+    function (data) {
+      return data.hashtag[0] === '#' ? false : 'Хэш-тег должен начинается с символа # (решётка)';
     },
-    function (hashtagsObject) {
-      return hashtagsObject.hashtag.length > 1 ? false : 'Хэш-тег не может содержать только символ # (решётка)';
+    function (data) {
+      return data.hashtag.length > 1 ? false : 'Хэш-тег не может содержать только символ # (решётка)';
     },
-    function (hashtagsObject) {
-      return hashtagsObject.hashtag.length <= MAX_HASHTAG_LENGTH ? false : 'Длина хэш-тега не может превышать 20 символов';
+    function (data) {
+      return data.hashtag.length <= MAX_HASHTAG_LENGTH ? false : 'Длина хэш-тега не может превышать 20 символов';
     },
-    function (hashtagsObject) {
-      return hashtagsObject.hashtag.substring(1).search('#') === -1 ? false : 'Хэш-тег не должен содержать несколько символов # (решётка)';
+    function (data) {
+      return data.hashtag.substring(1).search('#') === -1 ? false : 'Хэш-тег не должен содержать несколько символов # (решётка)';
     },
-    function (hashtagsObject) {
-      return hashtagsObject.hashtags.includes(hashtagsObject.hashtag, hashtagsObject.i + 1) === false ? false : 'Хэш-теги не могут повторяться';
+    function (data) {
+      return data.hashtags.includes(data.hashtag, data.i + 1) === false ? false : 'Хэш-теги не могут повторяться';
     },
   ];
 
+  var uploadElements = window.util.generateElements(elementsData, uploadFormElement);
+
   var setCustomValidity = function (errorText) {
-    hashtagsElement.style.border = '1px red solid';
-    hashtagsErrorElement.textContent = errorText;
+    uploadElements.hashtags.style.border = '1px red solid';
+    uploadElements.hashtagsError.textContent = errorText;
   };
 
   var clearHashtagsError = function () {
-    hashtagsElement.style.border = '';
-    hashtagsErrorElement.textContent = '';
+    uploadElements.hashtags.style.border = '';
+    uploadElements.hashtagsError.textContent = '';
   };
 
   var validateHashtags = function () {
-    var hashtags = hashtagsElement.value.trim();
+    var hashtags = uploadElements.hashtags.value.trim();
     if (hashtags !== '') {
       hashtags = hashtags.split(/\s+/);
       if (hashtags.length > 5) {
@@ -63,7 +67,7 @@
     validateHashtags();
   };
 
-  hashtagsElement.addEventListener('keyup', onHashtagsKeyup);
+  uploadElements.hashtags.addEventListener('keyup', onHashtagsKeyup);
 
   var onUploadSubmitClick = function (evt) {
     evt.preventDefault();
@@ -72,7 +76,7 @@
     }
   };
 
-  uploadSubmitElement.addEventListener('click', onUploadSubmitClick);
+  uploadElements.formSubmit.addEventListener('click', onUploadSubmitClick);
 
   window.validate = {
     clearHashtagsError: clearHashtagsError

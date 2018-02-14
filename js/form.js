@@ -2,40 +2,44 @@
 
 (function () {
   var uploadFormElement = document.querySelector('.upload-form');
-  var uploadFileElement = uploadFormElement.querySelector('#upload-file');
-  var uploadOverlayElement = uploadFormElement.querySelector('.upload-overlay');
-  var uploadOverlayCancelElement = uploadFormElement.querySelector('.upload-form-cancel');
-  var formDescroptionElement = uploadFormElement.querySelector('.upload-form-description');
-  var effectImageElement = uploadFormElement.querySelector('.effect-image-preview');
-  var hashtagsElement = uploadFormElement.querySelector('.upload-form-hashtags');
+  var elementsData = [
+    {elementName: 'uploadFile', selector: '#upload-file'},
+    {elementName: 'overlay', selector: '.upload-overlay'},
+    {elementName: 'formCancel', selector: '.upload-form-cancel'},
+    {elementName: 'description', selector: '.upload-form-description'},
+    {elementName: 'image', selector: '.effect-image-preview'},
+    {elementName: 'hashtags', selector: '.upload-form-hashtags'}
+  ];
+
+  var uploadElements = window.util.generateElements(elementsData, uploadFormElement);
 
   var showPreviewImg = function (file) {
     if (file.type.match(/image.*/)) {
       var reader = new FileReader();
       reader.addEventListener('load', function (evt) {
-        effectImageElement.src = evt.target.result;
+        uploadElements.image.src = evt.target.result;
       });
       reader.readAsDataURL(file);
     }
   };
 
   var onUploadOverlayEscPress = function (evt) {
-    if (window.util.isEscEvent(evt) && evt.target !== formDescroptionElement) {
+    if (window.util.isEscEvent(evt) && evt.target !== uploadElements.description) {
       closeUploadOverlay();
     }
   };
 
   var openUploadOverlay = function () {
-    showPreviewImg(uploadFileElement.files[0]);
-    uploadOverlayElement.classList.remove('hidden');
+    showPreviewImg(uploadElements.uploadFile.files[0]);
+    uploadElements.overlay.classList.remove('hidden');
     document.addEventListener('keydown', onUploadOverlayEscPress);
   };
 
   var closeUploadOverlay = function () {
-    uploadOverlayElement.classList.add('hidden');
-    uploadFileElement.value = '';
-    hashtagsElement.value = '';
-    formDescroptionElement.value = '';
+    uploadElements.overlay.classList.add('hidden');
+    uploadElements.uploadFile.value = '';
+    uploadElements.hashtags.value = '';
+    uploadElements.description.value = '';
     window.validate.clearHashtagsError();
     window.effect.setDefault();
     window.effect.setDefaultLevel();
@@ -43,11 +47,11 @@
     document.removeEventListener('keydown', onUploadOverlayEscPress);
   };
 
-  uploadFileElement.addEventListener('change', function () {
+  uploadElements.uploadFile.addEventListener('change', function () {
     openUploadOverlay();
   });
 
-  uploadOverlayCancelElement.addEventListener('click', function () {
+  uploadElements.formCancel.addEventListener('click', function () {
     closeUploadOverlay();
   });
 })();
