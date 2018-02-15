@@ -12,17 +12,16 @@
     return evt.keyCode === ENTER_KEYCODE;
   };
 
-  var generateElements = function (data, element) {
-    var obj = {};
-    for (var i = 0; i < data.length; i++) {
-      obj[data[i].elementName] = element.querySelector(data[i].selector);
-    }
-    return obj;
+  var queryElements = function (data, element) {
+    return data.reduce(function (previousValue, currentValue) {
+      previousValue[currentValue.elementName] = element.querySelector(currentValue.selector);
+      return previousValue;
+    }, {});
   };
 
   window.util = {
     isEnterEvent: isEnterEvent,
     isEscEvent: isEscEvent,
-    generateElements: generateElements
+    queryElements: queryElements
   };
 })();

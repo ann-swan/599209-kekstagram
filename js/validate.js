@@ -26,7 +26,7 @@
     },
   ];
 
-  var uploadElements = window.util.generateElements(elementsData, uploadFormElement);
+  var uploadElements = window.util.queryElements(elementsData, uploadFormElement);
 
   var setCustomValidity = function (errorText) {
     uploadElements.hashtags.style.border = '1px red solid';
@@ -38,28 +38,29 @@
     uploadElements.hashtagsError.textContent = '';
   };
 
+  var splitHashtags = function (hashtags) {
+    return hashtags.trim().toLowerCase().split(/\s+/);
+  };
+
   var validateHashtags = function () {
-    var hashtags = uploadElements.hashtags.value.trim();
-    if (hashtags !== '') {
-      hashtags = hashtags.split(/\s+/);
-      if (hashtags.length > 5) {
-        setCustomValidity('Хэш-тегов не может быть более пяти');
-        return false;
-      }
-      hashtags = hashtags.map(function (item) {
-        return item.toLowerCase();
-      });
-      for (var i = 0; i < hashtags.length; i++) {
-        for (var j = 0; j < validators.length; j++) {
-          var error = validators[j]({hashtag: hashtags[i], hashtags: hashtags, i: i});
-          if (error) {
-            setCustomValidity(error);
-            return false;
-          }
+    clearHashtagsError();
+    var hashtags = splitHashtags(uploadElements.hashtags.value);
+    if (hashtags[0] === '') {
+      return true;
+    }
+    if (hashtags.length > 5) {
+      setCustomValidity('Хэш-тегов не может быть более пяти');
+      return false;
+    }
+    for (var i = 0; i < hashtags.length; i++) {
+      for (var j = 0; j < validators.length; j++) {
+        var error = validators[j]({hashtag: hashtags[i], hashtags: hashtags, i: i});
+        if (error) {
+          setCustomValidity(error);
+          return false;
         }
       }
     }
-    clearHashtagsError();
     return true;
   };
 

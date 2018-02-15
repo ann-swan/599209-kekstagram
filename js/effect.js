@@ -35,7 +35,7 @@
     },
   };
 
-  var uploadElements = window.util.generateElements(elementsData, uploadFormElement);
+  var uploadElements = window.util.queryElements(elementsData, uploadFormElement);
 
   var calculateEffectLevel = function () {
     return Math.round(uploadElements.effectLevelPin.offsetLeft / uploadElements.effectLevelLine.offsetWidth * 100);

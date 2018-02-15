@@ -13,7 +13,7 @@
     {elementName: 'scaleBtnInc', selector: '.upload-resize-controls-button-inc'}
   ];
 
-  var uploadElements = window.util.generateElements(elementsData, uploadFormElement);
+  var uploadElements = window.util.queryElements(elementsData, uploadFormElement);
 
   var getScaleValue = function () {
     return Number(uploadElements.scaleValue.value.slice(0, -1));

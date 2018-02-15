@@ -11,7 +11,7 @@
     {elementName: 'hashtags', selector: '.upload-form-hashtags'}
   ];
 
-  var uploadElements = window.util.generateElements(elementsData, uploadFormElement);
+  var uploadElements = window.util.queryElements(elementsData, uploadFormElement);
 
   var showPreviewImg = function (file) {
     if (file.type.match(/image.*/)) {
