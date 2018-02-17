@@ -113,7 +113,7 @@
       var shift = startCoordX - moveEvt.clientX;
       startCoordX = moveEvt.clientX;
       var pinShift = uploadElements.effectLevelPin.offsetLeft - shift;
-      if (0 <= pinShift && maxOffset >= pinShift) {
+      if (pinShift >= 0 && maxOffset >= pinShift) {
         uploadElements.effectLevelPin.style.left = pinShift + 'px';
         uploadElements.effectLevelVal.style.width = pinShift + 'px';
         setPinEffectLevel();
