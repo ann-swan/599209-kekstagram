@@ -91,10 +91,6 @@
     setEffectLevel(DEFAULT_SLIDER_RANGE);
   };
 
-  var onEffectLevelPinMouseUp = function () {
-    setEffectLevel(calculateEffectLevel());
-  };
-
   var onEffectClick = function (evt) {
     var newEffectName = evt.target.value;
     if (newEffectName && newEffectName !== getCurrentEffect()) {
@@ -103,7 +99,38 @@
     }
   };
 
-  uploadElements.effectLevelPin.addEventListener('mouseup', onEffectLevelPinMouseUp);
+  var setPinEffectLevel = function () {
+    setEffectLevel(calculateEffectLevel());
+  };
+
+  uploadElements.effectLevelPin.addEventListener('mousedown', function (evt) {
+    evt.preventDefault();
+    var startCoordX = evt.clientX;
+    var maxOffset = uploadElements.effectLevelLine.offsetWidth;
+
+    var onEffectLevelPinMouseMove = function (moveEvt) {
+      moveEvt.preventDefault();
+      var shift = startCoordX - moveEvt.clientX;
+      startCoordX = moveEvt.clientX;
+      var pinShift = uploadElements.effectLevelPin.offsetLeft - shift;
+      if (pinShift >= 0 && maxOffset >= pinShift) {
+        uploadElements.effectLevelPin.style.left = pinShift + 'px';
+        uploadElements.effectLevelVal.style.width = pinShift + 'px';
+        setPinEffectLevel();
+      }
+    };
+
+    var onEffectLevelPinMouseUp = function (upEvt) {
+      upEvt.preventDefault();
+      setPinEffectLevel();
+      document.removeEventListener('mousemove', onEffectLevelPinMouseMove);
+      document.removeEventListener('mouseup', onEffectLevelPinMouseUp);
+    };
+
+    document.addEventListener('mousemove', onEffectLevelPinMouseMove);
+    document.addEventListener('mouseup', onEffectLevelPinMouseUp);
+  });
+
   uploadElements.effect.addEventListener('click', onEffectClick);
 
   window.effect = {
