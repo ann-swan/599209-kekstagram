@@ -36,7 +36,7 @@
   var clearUploadErrors = function () {
     uploadErrorElement.classList.add('hidden');
     uploadErrorElement.textContent = '';
-  }
+  };
 
   var openUploadOverlay = function () {
     showPreviewImg(uploadElements.uploadFile.files[0]);
@@ -72,7 +72,7 @@
     setTimeout(function () {
       uploadElements.uploadMessage.classList.add('hidden');
     }, MESSAGE_TIME);
-  }
+  };
 
   var onError = function (errorMessage) {
     uploadErrorElement.classList.remove('hidden');
@@ -80,7 +80,7 @@
     setTimeout(function () {
       clearUploadErrors();
     }, MESSAGE_TIME);
-  }
+  };
 
   var onUploadSubmitClick = function (evt) {
     evt.preventDefault();

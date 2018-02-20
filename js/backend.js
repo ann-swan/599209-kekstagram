@@ -24,16 +24,16 @@
     });
 
     xhr.timeout = TIMEOUT;
-    
+
     return xhr;
-  }
+  };
 
   var download = function (onLoad, onError) {
     var xhr = createXHR(onLoad, onError);
     xhr.open('GET', DOWNLOAD_URL);
     xhr.send();
   };
-  
+
   var upload = function (data, onLoad, onError) {
     var xhr = createXHR(onLoad, onError);
     xhr.open('POST', UPLOAD_URL);
@@ -43,6 +43,6 @@
   window.backend = {
     download: download,
     upload: upload
-  }
+  };
 
 })();
