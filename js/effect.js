@@ -25,7 +25,7 @@
       return 'invert(' + getEffectLevelValue() + '%)';
     },
     phobos: function () {
-      return 'blur(' + 3 * getEffectLevelValue() / 100 + 'px)';
+      return 'blur(' + ((getEffectLevelValue() / 100) * (3 - 0.6) + 0.6).toFixed(2) + 'px)';
     },
     heat: function () {
       return 'brightness(' + 3 * getEffectLevelValue() / 100 + ')';
@@ -106,14 +106,19 @@
   uploadElements.effectLevelPin.addEventListener('mousedown', function (evt) {
     evt.preventDefault();
     var startCoordX = evt.clientX;
+    var minOffset = 0;
     var maxOffset = uploadElements.effectLevelLine.offsetWidth;
+    var effectLineCoords = uploadElements.effectLevelLine.getBoundingClientRect();
 
     var onEffectLevelPinMouseMove = function (moveEvt) {
       moveEvt.preventDefault();
       var shift = startCoordX - moveEvt.clientX;
       startCoordX = moveEvt.clientX;
       var pinShift = uploadElements.effectLevelPin.offsetLeft - shift;
-      if (pinShift >= 0 && maxOffset >= pinShift) {
+      if (pinShift >= minOffset
+          && maxOffset >= pinShift
+          && startCoordX >= effectLineCoords.left
+          && startCoordX <= effectLineCoords.right) {
         uploadElements.effectLevelPin.style.left = pinShift + 'px';
         uploadElements.effectLevelVal.style.width = pinShift + 'px';
         setPinEffectLevel();

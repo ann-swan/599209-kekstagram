@@ -70,16 +70,8 @@
 
   uploadElements.hashtags.addEventListener('keyup', onHashtagsKeyup);
 
-  var onUploadSubmitClick = function (evt) {
-    evt.preventDefault();
-    if (validateHashtags()) {
-      uploadFormElement.submit();
-    }
-  };
-
-  uploadElements.formSubmit.addEventListener('click', onUploadSubmitClick);
-
   window.validate = {
+    validateHashtags: validateHashtags,
     clearHashtagsError: clearHashtagsError
   };
 })();

@@ -3,6 +3,7 @@
 (function () {
   var pictureTemplate = document.querySelector('#picture-template').content.querySelector('.picture');
   var picturesElement = document.querySelector('.pictures');
+  var downloadErrorElement = document.querySelector('.download-error');
 
   var createPhotoElement = function (index, photo) {
     var pictureElement = pictureTemplate.cloneNode(true);
@@ -22,5 +23,17 @@
     listElement.appendChild(fragment);
   };
 
-  fillPhotosList(window.data, picturesElement);
+  var onSuccess = function (data) {
+    downloadErrorElement.classList.add('hidden');
+    window.data = data;
+    fillPhotosList(data, picturesElement);
+  };
+
+  var onError = function (errorMessage) {
+    downloadErrorElement.classList.remove('hidden');
+    downloadErrorElement.textContent = errorMessage;
+  };
+
+  window.backend.download(onSuccess, onError);
+
 })();
