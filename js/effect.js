@@ -4,6 +4,8 @@
   var DEFAULT_EFFECT = 'none';
   var CLASS_EFFECT_PREFIX = 'effect-';
   var DEFAULT_SLIDER_RANGE = 100;
+  var MIN_EFFECT_VALUE = 0.6;
+  var MAX_EFFECT_VALUE = 3;
   var uploadFormElement = document.querySelector('.upload-form');
   var elementsData = [
     {elementName: 'effect', selector: '.upload-effect-controls'},
@@ -25,10 +27,10 @@
       return 'invert(' + getEffectLevelValue() + '%)';
     },
     phobos: function () {
-      return 'blur(' + ((getEffectLevelValue() / 100) * (3 - 0.6) + 0.6).toFixed(2) + 'px)';
+      return 'blur(' + ((getEffectLevelValue() / 100) * (MAX_EFFECT_VALUE - MIN_EFFECT_VALUE) + MIN_EFFECT_VALUE).toFixed(2) + 'px)';
     },
     heat: function () {
-      return 'brightness(' + 3 * getEffectLevelValue() / 100 + ')';
+      return 'brightness(' + MAX_EFFECT_VALUE * getEffectLevelValue() / 100 + ')';
     },
     none: function () {
       return '';
@@ -136,7 +138,11 @@
     document.addEventListener('mouseup', onEffectLevelPinMouseUp);
   });
 
-  uploadElements.effect.addEventListener('click', onEffectClick);
+  uploadElements.effect.addEventListener('change', onEffectClick);
+
+  uploadElements.effect.addEventListener('keydown', function (evt) {
+    window.util.imitateClick(evt);
+  });
 
   window.effect = {
     setDefault: setDefaultEffect,
