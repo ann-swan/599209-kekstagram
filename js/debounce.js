@@ -1,12 +1,11 @@
 'use strict';
 
-(function() {
- 
-  window.debounce = function(fn, timeout) {
+(function () {
+
+  window.debounce = function(fn, timeout, ctx) {
     var timer;
-    return function() {
+    return function () {
       var args = arguments;
-      var ctx = this;
       clearTimeout(timer);
       timer = setTimeout(function () {
         fn.apply(ctx, args);

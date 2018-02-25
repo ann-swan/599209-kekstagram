@@ -14,7 +14,7 @@
     recommendData = data;
   };
 
-  var shuffle = function(list) {
+  var shuffle = function (list) {
     var newList = [];
     var copyedList = list.slice(0);
     list.forEach(function () {
@@ -62,7 +62,7 @@
   var onFilterChange = window.debounce(function (evt) {
     window.data = filteredData[evt.target.value]();
     window.picture.fillPhotosList(window.data, window.picture.element);
-  }, DEBOUNCE_TIME);
+  }, DEBOUNCE_TIME, filterElements.container);
 
   filterElements.container.addEventListener('change', onFilterChange);
 

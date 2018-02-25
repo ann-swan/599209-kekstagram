@@ -59,12 +59,12 @@
   uploadElements.formCancel.addEventListener('click', function () {
     closeUploadOverlay();
   });
-  
+
   var showUploadMessage = function (message) {
-    uploadElements.uploadMessageCont.textContent = 'Фотография успешно загружена';
+    uploadElements.uploadMessageCont.textContent = message;
     uploadElements.uploadMessage.classList.remove('hidden');
   };
-  
+
   var hideUploadMessage = function () {
     uploadElements.uploadMessageCont.textContent = '';
     uploadElements.uploadMessage.classList.add('hidden');
