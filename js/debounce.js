@@ -2,7 +2,7 @@
 
 (function () {
 
-  window.debounce = function(fn, timeout, ctx) {
+  window.debounce = function (fn, timeout, ctx) {
     var timer;
     return function () {
       var args = arguments;
