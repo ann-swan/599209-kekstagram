@@ -1,12 +1,12 @@
 'use strict';
 
 (function () {
-  var pictureTemplate = document.querySelector('#picture-template').content.querySelector('.picture');
+  var pictureTemplateElement = document.querySelector('#picture-template').content.querySelector('.picture');
   var picturesElement = document.querySelector('.pictures');
   var downloadErrorElement = document.querySelector('.download-error');
 
   var createPhotoElement = function (index, photo) {
-    var pictureElement = pictureTemplate.cloneNode(true);
+    var pictureElement = pictureTemplateElement.cloneNode(true);
     pictureElement.attributes.id = index;
     pictureElement.querySelector('img').attributes.src.value = photo.url;
     pictureElement.querySelector('.picture-likes').textContent = photo.likes;
@@ -26,7 +26,9 @@
   var onSuccess = function (data) {
     downloadErrorElement.classList.add('hidden');
     window.data = data;
+    window.filter.setRecommendData(data);
     fillPhotosList(data, picturesElement);
+    window.filter.show();
   };
 
   var onError = function (errorMessage) {
@@ -36,4 +38,8 @@
 
   window.backend.download(onSuccess, onError);
 
+  window.picture = {
+    fillPhotosList: fillPhotosList,
+    element: picturesElement
+  };
 })();

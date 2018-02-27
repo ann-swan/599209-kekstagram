@@ -4,6 +4,8 @@
   var DEFAULT_EFFECT = 'none';
   var CLASS_EFFECT_PREFIX = 'effect-';
   var DEFAULT_SLIDER_RANGE = 100;
+  var MIN_EFFECT_VALUE = 0.6;
+  var MAX_EFFECT_VALUE = 3;
   var uploadFormElement = document.querySelector('.upload-form');
   var elementsData = [
     {elementName: 'effect', selector: '.upload-effect-controls'},
@@ -25,10 +27,10 @@
       return 'invert(' + getEffectLevelValue() + '%)';
     },
     phobos: function () {
-      return 'blur(' + ((getEffectLevelValue() / 100) * (3 - 0.6) + 0.6).toFixed(2) + 'px)';
+      return 'blur(' + ((getEffectLevelValue() / 100) * (MAX_EFFECT_VALUE - MIN_EFFECT_VALUE) + MIN_EFFECT_VALUE).toFixed(2) + 'px)';
     },
     heat: function () {
-      return 'brightness(' + 3 * getEffectLevelValue() / 100 + ')';
+      return 'brightness(' + MAX_EFFECT_VALUE * getEffectLevelValue() / 100 + ')';
     },
     none: function () {
       return '';
@@ -115,14 +117,16 @@
       var shift = startCoordX - moveEvt.clientX;
       startCoordX = moveEvt.clientX;
       var pinShift = uploadElements.effectLevelPin.offsetLeft - shift;
-      if (pinShift >= minOffset
-          && maxOffset >= pinShift
-          && startCoordX >= effectLineCoords.left
-          && startCoordX <= effectLineCoords.right) {
-        uploadElements.effectLevelPin.style.left = pinShift + 'px';
-        uploadElements.effectLevelVal.style.width = pinShift + 'px';
-        setPinEffectLevel();
+
+      if (startCoordX < effectLineCoords.left) {
+        pinShift = minOffset;
+      } else if (startCoordX > effectLineCoords.right) {
+        pinShift = maxOffset;
       }
+
+      uploadElements.effectLevelPin.style.left = pinShift + 'px';
+      uploadElements.effectLevelVal.style.width = pinShift + 'px';
+      setPinEffectLevel();
     };
 
     var onEffectLevelPinMouseUp = function (upEvt) {
@@ -136,7 +140,11 @@
     document.addEventListener('mouseup', onEffectLevelPinMouseUp);
   });
 
-  uploadElements.effect.addEventListener('click', onEffectClick);
+  uploadElements.effect.addEventListener('change', onEffectClick);
+
+  uploadElements.effect.addEventListener('keydown', function (evt) {
+    window.util.imitateClick(evt);
+  });
 
   window.effect = {
     setDefault: setDefaultEffect,

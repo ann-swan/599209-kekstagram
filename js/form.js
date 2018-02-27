@@ -2,8 +2,8 @@
 
 (function () {
   var MESSAGE_TIME = 3000;
+  var SUCCESS_MESSAGE = 'Фотография успешно загружена';
   var uploadFormElement = document.querySelector('.upload-form');
-  var uploadErrorElement = document.querySelector('.download-error');
   var elementsData = [
     {elementName: 'uploadFile', selector: '#upload-file'},
     {elementName: 'overlay', selector: '.upload-overlay'},
@@ -33,11 +33,6 @@
     }
   };
 
-  var clearUploadErrors = function () {
-    uploadErrorElement.classList.add('hidden');
-    uploadErrorElement.textContent = '';
-  };
-
   var openUploadOverlay = function () {
     showPreviewImg(uploadElements.uploadFile.files[0]);
     uploadElements.overlay.classList.remove('hidden');
@@ -53,7 +48,7 @@
     window.effect.setDefault();
     window.effect.setDefaultLevel();
     window.scale.setDefault();
-    clearUploadErrors();
+    window.util.clearLoadErrors();
     document.removeEventListener('keydown', onUploadOverlayEscPress);
   };
 
@@ -65,26 +60,30 @@
     closeUploadOverlay();
   });
 
+  var showUploadMessage = function (message) {
+    uploadElements.uploadMessageCont.textContent = message;
+    uploadElements.uploadMessage.classList.remove('hidden');
+  };
+
+  var hideUploadMessage = function () {
+    uploadElements.uploadMessageCont.textContent = '';
+    uploadElements.uploadMessage.classList.add('hidden');
+  };
+
   var onSuccess = function () {
     closeUploadOverlay();
-    uploadElements.uploadMessageCont.textContent = 'Фотография успешно загружена';
-    uploadElements.uploadMessage.classList.remove('hidden');
-    setTimeout(function () {
-      uploadElements.uploadMessage.classList.add('hidden');
-    }, MESSAGE_TIME);
+    showUploadMessage(SUCCESS_MESSAGE);
+    setTimeout(hideUploadMessage, MESSAGE_TIME);
   };
 
   var onError = function (errorMessage) {
-    uploadErrorElement.classList.remove('hidden');
-    uploadErrorElement.textContent = errorMessage;
-    setTimeout(function () {
-      clearUploadErrors();
-    }, MESSAGE_TIME);
+    window.util.showLoadErrors(errorMessage);
+    setTimeout(window.util.clearLoadErrors, MESSAGE_TIME);
   };
 
   var onUploadSubmitClick = function (evt) {
     evt.preventDefault();
-    if (window.validate.validateHashtags()) {
+    if (window.validate.hashtags()) {
       window.backend.upload(new FormData(uploadFormElement), onSuccess, onError);
     }
   };

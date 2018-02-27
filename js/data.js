@@ -10,25 +10,19 @@
     'Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!'
   ];
   var PHOTOS_COUNT = 25;
+  var MIN_LIKES = 15;
+  var MAX_LIKES = 201;
 
   var createPhotosList = function (photosCount) {
     var photosList = [];
     for (var i = 1; i <= photosCount; i++) {
       photosList.push({
         url: 'photos/' + i + '.jpg',
-        likes: getRandomBetween(15, 201),
-        comments: [getRandomArrayElement(COMMENTS)]
+        likes: window.util.getRandomBetween(MIN_LIKES, MAX_LIKES),
+        comments: [window.util.getRandomArrayElement(COMMENTS)]
       });
     }
     return photosList;
-  };
-
-  var getRandomBetween = function (min, max) {
-    return Math.floor(Math.random() * (max - min)) + min;
-  };
-
-  var getRandomArrayElement = function (list) {
-    return list[getRandomBetween(0, list.length)];
   };
 
   window.data = createPhotosList(PHOTOS_COUNT);
