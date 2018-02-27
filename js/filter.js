@@ -16,9 +16,9 @@
 
   var shuffle = function (list) {
     var newList = [];
-    var copyedList = list.slice(0);
+    var listClone = list.slice(0);
     list.forEach(function () {
-      newList.push(copyedList.splice(window.util.getRandomBetween(0, copyedList.length - 1), 1)[0]);
+      newList.push(listClone.splice(window.util.getRandomBetween(0, listClone.length - 1), 1)[0]);
     });
     return newList;
   };
@@ -42,16 +42,20 @@
     return Array.isArray(data) ? data.length : data;
   };
 
-  var filterDesc = function (data, property) {
-    return data.slice(0).sort(function (first, second) {
-      first = getNumber(first[property]);
-      second = getNumber(second[property]);
+  var compareData = function (first, second) {
       if (first > second) {
         return -1;
       } else if (first < second) {
         return 1;
       }
       return 0;
+    };
+
+  var filterDesc = function (data, property) {
+    return data.slice(0).sort(function (firstData, secondData) {
+      var first = getNumber(firstData[property]);
+      var second = getNumber(secondData[property]);
+      return compareData(first, second);
     });
   };
 

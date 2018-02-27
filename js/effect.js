@@ -117,14 +117,16 @@
       var shift = startCoordX - moveEvt.clientX;
       startCoordX = moveEvt.clientX;
       var pinShift = uploadElements.effectLevelPin.offsetLeft - shift;
-      if (pinShift >= minOffset
-          && maxOffset >= pinShift
-          && startCoordX >= effectLineCoords.left
-          && startCoordX <= effectLineCoords.right) {
-        uploadElements.effectLevelPin.style.left = pinShift + 'px';
-        uploadElements.effectLevelVal.style.width = pinShift + 'px';
-        setPinEffectLevel();
+
+      if (startCoordX < effectLineCoords.left) {
+        pinShift = minOffset;
+      } else if (startCoordX > effectLineCoords.right) {
+        pinShift = maxOffset;
       }
+
+      uploadElements.effectLevelPin.style.left = pinShift + 'px';
+      uploadElements.effectLevelVal.style.width = pinShift + 'px';
+      setPinEffectLevel();
     };
 
     var onEffectLevelPinMouseUp = function (upEvt) {
