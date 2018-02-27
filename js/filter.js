@@ -43,13 +43,13 @@
   };
 
   var compareData = function (first, second) {
-      if (first > second) {
-        return -1;
-      } else if (first < second) {
-        return 1;
-      }
-      return 0;
-    };
+    if (first > second) {
+      return -1;
+    } else if (first < second) {
+      return 1;
+    }
+    return 0;
+  };
 
   var filterDesc = function (data, property) {
     return data.slice(0).sort(function (firstData, secondData) {
