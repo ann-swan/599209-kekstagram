@@ -6,7 +6,6 @@
   var DEFAULT_SLIDER_RANGE = 100;
   var MIN_EFFECT_VALUE = 0.6;
   var MAX_EFFECT_VALUE = 3;
-  var uploadFormElement = document.querySelector('.upload-form');
   var elementsData = [
     {elementName: 'effect', selector: '.upload-effect-controls'},
     {elementName: 'effectLevel', selector: '.upload-effect-level'},
@@ -37,7 +36,7 @@
     },
   };
 
-  var uploadElements = window.util.queryElements(elementsData, uploadFormElement);
+  var uploadElements = window.util.queryElements(elementsData, window.form.element);
 
   var calculateEffectLevel = function () {
     return Math.round(uploadElements.effectLevelPin.offsetLeft / uploadElements.effectLevelLine.offsetWidth * 100);

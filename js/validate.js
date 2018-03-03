@@ -12,7 +12,6 @@
     MAX_COUNT: 'Хэш-тегов не может быть более пяти'
   };
   var BORDER_ERROR_STYLE = '1px red solid';
-  var uploadFormElement = document.querySelector('.upload-form');
   var elementsData = [
     {elementName: 'formSubmit', selector: '.upload-form-submit'},
     {elementName: 'hashtags', selector: '.upload-form-hashtags'},
@@ -36,7 +35,7 @@
     },
   ];
 
-  var uploadElements = window.util.queryElements(elementsData, uploadFormElement);
+  var uploadElements = window.util.queryElements(elementsData, window.form.element);
 
   var setCustomValidity = function (errorText) {
     uploadElements.hashtags.style.border = BORDER_ERROR_STYLE;

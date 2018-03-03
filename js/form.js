@@ -89,4 +89,8 @@
   };
 
   uploadFormElement.addEventListener('submit', onUploadSubmitClick);
+
+  window.form = {
+    element: uploadFormElement
+  }
 })();

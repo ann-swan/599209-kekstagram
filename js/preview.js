@@ -36,7 +36,7 @@
     evt.preventDefault();
     while (target !== picturesElement.pictures) {
       if (target.className === 'picture') {
-        fillGalleryElement(window.data[target.attributes.id]);
+        fillGalleryElement(window.picture.data[target.attributes.id]);
         openGalleryOverlay();
         return;
       }

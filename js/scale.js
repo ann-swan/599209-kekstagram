@@ -5,7 +5,6 @@
   var MIN_SCALE = 25;
   var MAX_SCALE = 100;
   var DEFAULT_SCALE = 100;
-  var uploadFormElement = document.querySelector('.upload-form');
   var elementsData = [
     {elementName: 'image', selector: '.effect-image-preview'},
     {elementName: 'scaleValue', selector: '.upload-resize-controls-value'},
@@ -13,7 +12,7 @@
     {elementName: 'scaleBtnInc', selector: '.upload-resize-controls-button-inc'}
   ];
 
-  var uploadElements = window.util.queryElements(elementsData, uploadFormElement);
+  var uploadElements = window.util.queryElements(elementsData, window.form.element);
 
   var getScaleValue = function () {
     return Number(uploadElements.scaleValue.value.slice(0, -1));

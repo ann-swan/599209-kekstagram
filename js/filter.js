@@ -7,11 +7,11 @@
     {elementName: 'filter', selector: '.filters-radio'},
     {elementName: 'filterItem', selector: '.filters-item'}
   ];
-  var recommendData = window.data.slice(0);
+  var recommendData = [];
   var filterElements = window.util.queryElements(elementsData, document);
 
   var setRecommendData = function (data) {
-    recommendData = data;
+    recommendData = data.slice(0);
   };
 
   var shuffle = function (list) {
@@ -28,13 +28,13 @@
       return recommendData;
     },
     'popular': function () {
-      return filterDesc(window.data, 'likes');
+      return filterDesc(recommendData, 'likes');
     },
     'discussed': function () {
-      return filterDesc(window.data, 'comments');
+      return filterDesc(recommendData, 'comments');
     },
     'random': function () {
-      return shuffle(window.data);
+      return shuffle(recommendData);
     }
   };
 
@@ -64,8 +64,8 @@
   };
 
   var onFilterChange = window.debounce(function (evt) {
-    window.data = filteredData[evt.target.value]();
-    window.picture.fillPhotosList(window.data, window.picture.element);
+    window.picture.data = filteredData[evt.target.value]();
+    window.picture.fillPhotosList(window.picture.data, window.picture.element);
   }, DEBOUNCE_TIME, filterElements.container);
 
   filterElements.container.addEventListener('change', onFilterChange);

@@ -3,7 +3,7 @@
 (function () {
   var pictureTemplateElement = document.querySelector('#picture-template').content.querySelector('.picture');
   var picturesElement = document.querySelector('.pictures');
-  var downloadErrorElement = document.querySelector('.download-error');
+  var picturesData = [];
 
   var createPhotoElement = function (index, photo) {
     var pictureElement = pictureTemplateElement.cloneNode(true);
@@ -24,22 +24,22 @@
   };
 
   var onSuccess = function (data) {
-    downloadErrorElement.classList.add('hidden');
-    window.data = data;
+    window.util.clearLoadErrors();
+    window.picture.data = data;
     window.filter.setRecommendData(data);
     fillPhotosList(data, picturesElement);
     window.filter.show();
   };
 
   var onError = function (errorMessage) {
-    downloadErrorElement.classList.remove('hidden');
-    downloadErrorElement.textContent = errorMessage;
+    window.util.showLoadErrors(errorMessage);
   };
 
   window.backend.download(onSuccess, onError);
 
   window.picture = {
     fillPhotosList: fillPhotosList,
-    element: picturesElement
+    element: picturesElement,
+    data: picturesData
   };
 })();
