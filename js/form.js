@@ -92,5 +92,5 @@
 
   window.form = {
     element: uploadFormElement
-  }
+  };
 })();
